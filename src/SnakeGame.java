@@ -61,15 +61,9 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
     }
 
     public void draw(Graphics g){
-        //Grid
-        // for (int i = 0; i < boardWidth/tileSize; i++) {
-        //     g.drawLine(i*tileSize, 0, i * tileSize, boardHeight);
-        //     g.drawLine(0, i*tileSize, boardWidth, i * tileSize);
-
-        // }
         //Food
         g.setColor(Color.red);
-        g.fill3DRect(food.x * tileSize, food.y * tileSize, tileSize, tileSize,true);
+        g.fillOval(food.x * tileSize, food.y * tileSize, tileSize, tileSize);
 
         //Snake head
         g.setColor(Color.orange);
@@ -133,7 +127,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
             }
         }
 
-        if(snakeHead.x * tileSize < 0 || snakeHead.x * tileSize > boardWidth || snakeHead.y * tileSize < 0 || snakeHead.y * tileSize > boardHeight){
+        if(snakeHead.x * tileSize < 0 || snakeHead.x * tileSize >= boardWidth || snakeHead.y * tileSize < 0 || snakeHead.y * tileSize >= boardHeight){
             gameOver = true;
         }
     }
@@ -165,6 +159,16 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
         else if(e.getKeyCode() == KeyEvent.VK_RIGHT && velocityX != -1){
             velocityX = 1;
             velocityY = 0;
+        }
+        else if(gameOver && e.getKeyCode() == KeyEvent.VK_SPACE){
+            gameLoop.start();
+            velocityX = 0;
+            velocityY = 0;
+            gameOver = false;
+            snakeBody.clear();
+            placeFood();
+            snakeHead.x = 5;
+            snakeHead.y = 5;
         }
     }
     
